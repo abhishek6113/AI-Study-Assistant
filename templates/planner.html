@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <title>Study Planner</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='style.css') }}">
+
+</head>
+
+<body>
+
+<header>
+
+    <div class="logo">
+        📚 Study Planner
+    </div>
+
+    <nav>
+        <a href="/dashboard">Dashboard</a>
+        <a href="/quiz">Quiz</a>
+        <a href="/ai">AI Assistant</a>
+        <a href="/logout">Logout</a>
+    </nav>
+
+</header>
+
+
+<div class="planner">
+
+    <h1>My Study Tasks 📚</h1>
+
+
+    <!-- ADD TASK -->
+
+    <form method="POST">
+
+        <input
+            type="text"
+            name="task"
+            placeholder="Enter study task..."
+            required
+        >
+
+        <input
+            type="date"
+            name="due_date"
+            required
+        >
+
+        <select name="priority" required>
+
+            <option value="High">
+                High Priority
+            </option>
+
+            <option value="Medium" selected>
+                Medium Priority
+            </option>
+
+            <option value="Low">
+                Low Priority
+            </option>
+
+        </select>
+
+        <button type="submit">
+            Add Task
+        </button>
+
+    </form>
+
+
+    <!-- SEARCH AND FILTER -->
+
+    <div class="task-search">
+
+        <input
+            type="text"
+            id="taskSearch"
+            placeholder="🔎 Search your task..."
+            oninput="applyFilters()"
+        >
+
+        <select
+            id="statusFilter"
+            onchange="applyFilters()"
+        >
+
+            <option value="all">
+                All Tasks
+            </option>
+
+            <option value="Pending">
+                Pending
+            </option>
+
+            <option value="Completed">
+                Completed
+            </option>
+
+        </select>
+
+    </div>
+
+
+    <!-- TASK LIST -->
+
+    <div class="task-list">
+
+        {% for task in tasks %}
+
+        <div
+            class="task"
+            data-task-name="{{ task['task']|lower }}"
+            data-status="{{ task['status'] }}"
+        >
+
+            <!-- TASK INFORMATION -->
+
+            <div>
+
+                <h3>
+                    {{ task["task"] }}
+                </h3>
+
+
+                <!-- DUE DATE -->
+
+                {% if task["due_date"] %}
+
+                <p>
+                    📅 Due Date: {{ task["due_date"] }}
+                </p>
+
+                {% endif %}
+
+
+                <!-- PRIORITY -->
+
+                <p>
+                    ⭐ Priority:
+
+                    {% if task["priority"] == "High" %}
+
+                    <span class="priority high">
+                        High
+                    </span>
+
+                    {% elif task["priority"] == "Low" %}
+
+                    <span class="priority low">
+                        Low
+                    </span>
+
+                    {% else %}
+
+                    <span class="priority medium">
+                        Medium
+                    </span>
+
+                    {% endif %}
+
+                </p>
+
+
+                <!-- STATUS -->
+
+                {% if task["status"] == "Completed" %}
+
+                    <span class="task-status completed-status">
+                        ✅ Completed
+                    </span>
+
+                {% elif task["due_date"] %}
+
+                    {% if task["due_date"] < today %}
+
+                        <span class="task-status overdue-status">
+                            🔴 Overdue
+                        </span>
+
+                    {% elif task["due_date"] == today %}
+
+                        <span class="task-status today-status">
+                            🟠 Due Today
+                        </span>
+
+                    {% else %}
+
+                        <span class="task-status upcoming-status">
+                            🔵 Upcoming
+                        </span>
+
+                    {% endif %}
+
+                {% else %}
+
+                    <span class="task-status upcoming-status">
+                        📅 No Due Date
+                    </span>
+
+                {% endif %}
+
+            </div>
+
+
+            <!-- ACTION BUTTONS -->
+
+            <div>
+
+                {% if task["status"] != "Completed" %}
+
+                <a href="/complete/{{ task['id'] }}">
+
+                    <button type="button">
+                        ✅ Complete
+                    </button>
+
+                </a>
+
+                {% endif %}
+
+
+                <a href="/edit/{{ task['id'] }}">
+
+                    <button type="button">
+                        ✏️ Edit
+                    </button>
+
+                </a>
+
+
+                <a href="/delete/{{ task['id'] }}">
+
+                    <button type="button">
+                        🗑️ Delete
+                    </button>
+
+                </a>
+
+            </div>
+
+        </div>
+
+        {% endfor %}
+
+    </div>
+
+
+    <!-- NO RESULT MESSAGE -->
+
+    <p
+        id="noResults"
+        style="display:none; text-align:center; margin-top:25px;"
+    >
+        🔎 No matching tasks found.
+    </p>
+
+
+</div>
+
+
+<!-- JAVASCRIPT -->
+
+<script>
+
+function applyFilters() {
+
+    const searchText =
+        document
+        .getElementById("taskSearch")
+        .value
+        .trim()
+        .toLowerCase();
+
+    const status =
+        document
+        .getElementById("statusFilter")
+        .value;
+
+    const tasks =
+        document.querySelectorAll(".task");
+
+    let visibleTasks = 0;
+
+
+    tasks.forEach(function(task) {
+
+        const taskName =
+            task
+            .getAttribute("data-task-name");
+
+        const taskStatus =
+            task
+            .getAttribute("data-status");
+
+
+        /* SEARCH */
+
+        const searchMatch =
+            taskName.includes(searchText);
+
+
+        /* STATUS FILTER */
+
+        const statusMatch =
+            status === "all" ||
+            taskStatus === status;
+
+
+        /* FINAL RESULT */
+
+        if (searchMatch && statusMatch) {
+
+            task.style.display = "flex";
+
+            visibleTasks++;
+
+        } else {
+
+            task.style.display = "none";
+
+        }
+
+    });
+
+
+    /* NO RESULT MESSAGE */
+
+    const noResults =
+        document.getElementById("noResults");
+
+
+    if (visibleTasks === 0) {
+
+        noResults.style.display = "block";
+
+    } else {
+
+        noResults.style.display = "none";
+
+    }
+
+}
+
+</script>
+
+
+</body>
+
+</html>

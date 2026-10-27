@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <title>Register - AI Study Assistant</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='style.css') }}">
+
+</head>
+
+<body>
+
+<header>
+
+    <div class="logo">
+        🎓 AI Study Assistant
+    </div>
+
+    <nav>
+
+        <a href="/">Home</a>
+        <a href="/login">Login</a>
+
+    </nav>
+
+</header>
+
+
+<div class="form-box register-box">
+
+    <div class="form-icon">
+        🎓
+    </div>
+
+    <h1>Create Account</h1>
+
+    <p>
+        Join AI Study Assistant and start learning.
+    </p>
+
+
+    {% if message %}
+
+        <div class="form-message">
+            ⚠️ {{ message }}
+        </div>
+
+    {% endif %}
+
+
+    <form method="POST">
+
+        <input
+            type="text"
+            name="name"
+            placeholder="Enter your name"
+            required
+        >
+
+
+        <input
+            type="email"
+            name="email"
+            placeholder="Enter your email"
+            required
+        >
+
+
+        <input
+            type="password"
+            name="password"
+            placeholder="Create password"
+            required
+        >
+
+
+        <button type="submit">
+            🚀 Create Account
+        </button>
+
+    </form>
+
+
+    <p class="form-bottom">
+
+        Already have an account?
+
+        <a href="/login">
+            Login here
+        </a>
+
+    </p>
+
+
+    <a href="/" class="back-home">
+        ← Back to Home
+    </a>
+
+</div>
+
+
+</body>
+</html>

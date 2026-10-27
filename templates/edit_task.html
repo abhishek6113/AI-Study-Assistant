@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <title>Edit Task</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='style.css') }}">
+
+</head>
+
+<body>
+
+<header>
+
+    <div class="logo">
+        ✏️ Edit Study Task
+    </div>
+
+    <nav>
+
+        <a href="/dashboard">Dashboard</a>
+        <a href="/planner">Planner</a>
+        <a href="/quiz">Quiz</a>
+        <a href="/ai">AI Assistant</a>
+
+    </nav>
+
+</header>
+
+
+<div class="form-box">
+
+    <h1>✏️ Edit Task</h1>
+
+    <form method="POST">
+
+        <input type="text"
+               name="task"
+               value="{{ task['task'] }}"
+               placeholder="Enter task"
+               required>
+
+
+        <input type="date"
+               name="due_date"
+               value="{{ task['due_date'] or '' }}"
+               required>
+
+
+        <select name="priority" required>
+
+            <option value="High"
+                {% if task['priority'] == 'High' %}selected{% endif %}>
+                High Priority
+            </option>
+
+            <option value="Medium"
+                {% if task['priority'] == 'Medium' or not task['priority'] %}selected{% endif %}>
+                Medium Priority
+            </option>
+
+            <option value="Low"
+                {% if task['priority'] == 'Low' %}selected{% endif %}>
+                Low Priority
+            </option>
+
+        </select>
+
+
+        <button type="submit">
+            💾 Save Changes
+        </button>
+
+    </form>
+
+
+    <br>
+
+    <a href="/planner">
+        <button type="button">
+            ← Back to Planner
+        </button>
+    </a>
+
+</div>
+
+</body>
+
+</html>

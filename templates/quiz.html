@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <title>Programming Quiz</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='style.css') }}">
+
+</head>
+
+<body>
+
+<header>
+
+    <div class="logo">
+        📝 Programming Quiz
+    </div>
+
+    <nav>
+
+        <a href="/dashboard">Dashboard</a>
+        <a href="/planner">Planner</a>
+        <a href="/ai">AI Assistant</a>
+        <a href="/logout">Logout</a>
+
+    </nav>
+
+</header>
+
+
+<div class="quiz-box">
+
+    <h1>Programming Quiz 🧠</h1>
+
+    <p class="quiz-intro">
+        Test your basic programming knowledge.
+    </p>
+
+
+    <form method="POST">
+
+
+        <!-- QUESTION 1 -->
+
+        <div class="question">
+
+            <h3>
+                1. Which language is popular for AI and Data Science?
+            </h3>
+
+            <label>
+                <input type="radio"
+                       name="q1"
+                       value="Python"
+                       required>
+                Python
+            </label>
+
+            <label>
+                <input type="radio"
+                       name="q1"
+                       value="HTML">
+                HTML
+            </label>
+
+        </div>
+
+
+        <!-- QUESTION 2 -->
+
+        <div class="question">
+
+            <h3>
+                2. Which language creates the structure of a webpage?
+            </h3>
+
+            <label>
+                <input type="radio"
+                       name="q2"
+                       value="HTML"
+                       required>
+                HTML
+            </label>
+
+            <label>
+                <input type="radio"
+                       name="q2"
+                       value="Python">
+                Python
+            </label>
+
+        </div>
+
+
+        <!-- QUESTION 3 -->
+
+        <div class="question">
+
+            <h3>
+                3. Which database are we using in this project?
+            </h3>
+
+            <label>
+                <input type="radio"
+                       name="q3"
+                       value="SQLite"
+                       required>
+                SQLite
+            </label>
+
+            <label>
+                <input type="radio"
+                       name="q3"
+                       value="MongoDB">
+                MongoDB
+            </label>
+
+        </div>
+
+
+        <!-- QUESTION 4 -->
+
+        <div class="question">
+
+            <h3>
+                4. Which language is used for styling webpages?
+            </h3>
+
+            <label>
+                <input type="radio"
+                       name="q4"
+                       value="CSS"
+                       required>
+                CSS
+            </label>
+
+            <label>
+                <input type="radio"
+                       name="q4"
+                       value="Python">
+                Python
+            </label>
+
+        </div>
+
+
+        <!-- QUESTION 5 -->
+
+        <div class="question">
+
+            <h3>
+                5. Which Python framework are we using in this project?
+            </h3>
+
+            <label>
+                <input type="radio"
+                       name="q5"
+                       value="Flask"
+                       required>
+                Flask
+            </label>
+
+            <label>
+                <input type="radio"
+                       name="q5"
+                       value="Django">
+                Django
+            </label>
+
+        </div>
+
+
+        <button type="submit">
+            Submit Quiz 🚀
+        </button>
+
+    </form>
+
+
+    <!-- RESULT -->
+
+    {% if score is not none %}
+
+    <div class="quiz-result-box">
+
+        <h2>🎉 Quiz Completed!</h2>
+
+        <h3>
+            Score: {{ score }}/5
+        </h3>
+
+        <h3>
+            Percentage: {{ percentage }}%
+        </h3>
+
+
+        {% if percentage == 100 %}
+
+            <p>🏆 Excellent! Perfect Score!</p>
+
+        {% elif percentage >= 60 %}
+
+            <p>👏 Good job! Keep improving.</p>
+
+        {% else %}
+
+            <p>💪 Keep practicing and try again.</p>
+
+        {% endif %}
+
+
+        <a href="/quiz">
+
+            <button type="button">
+                Try Again
+            </button>
+
+        </a>
+
+    </div>
+
+    {% endif %}
+
+
+</div>
+
+</body>
+
+</html>

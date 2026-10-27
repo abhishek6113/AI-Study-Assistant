@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <title>AI Study Assistant</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='style.css') }}">
+
+</head>
+
+<body>
+
+<header>
+
+    <div class="logo">
+        🤖 AI Study Assistant
+    </div>
+
+    <nav>
+
+        <a href="/dashboard">Dashboard</a>
+        <a href="/planner">Planner</a>
+        <a href="/quiz">Quiz</a>
+        <a href="/logout">Logout</a>
+
+    </nav>
+
+</header>
+
+
+<div class="ai-box">
+
+    <div class="ai-header">
+
+        <div class="ai-icon">
+            🤖
+        </div>
+
+        <h1>AI Study Assistant</h1>
+
+        <p>
+            Ask questions and learn programming in simple language.
+        </p>
+
+    </div>
+
+
+    <!-- SUGGESTED QUESTIONS -->
+
+    <div class="suggestions">
+
+        <p>💡 Try asking:</p>
+
+        <span>What is Python?</span>
+        <span>What is HTML?</span>
+        <span>What is Flask?</span>
+        <span>What is Database?</span>
+
+    </div>
+
+
+    <!-- QUESTION FORM -->
+
+    <form method="POST">
+
+        <input type="text"
+               name="question"
+               placeholder="Ask your programming question..."
+               required>
+
+        <button type="submit">
+            Ask AI 🤖
+        </button>
+
+    </form>
+
+
+    <!-- AI ANSWER -->
+
+    {% if answer %}
+
+    <div class="answer">
+
+        <div class="answer-header">
+
+            <span>🤖</span>
+
+            <h2>AI Answer</h2>
+
+        </div>
+
+
+        <p>
+            {{ answer }}
+        </p>
+
+    </div>
+
+
+    <a href="/ai">
+
+        <button class="new-question">
+            🔄 Ask Another Question
+        </button>
+
+    </a>
+
+    {% endif %}
+
+
+</div>
+
+
+<footer>
+
+    <p>
+        🤖 AI Study Assistant | Learn • Practice • Improve
+    </p>
+
+</footer>
+
+
+</body>
+
+</html>

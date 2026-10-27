@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <title>Dashboard - AI Study Assistant</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='style.css') }}">
+
+</head>
+
+<body>
+
+<header>
+
+    <div class="logo">
+        🎓 AI Study Assistant
+    </div>
+
+    <nav>
+        <a href="/dashboard">Dashboard</a>
+        <a href="/planner">Study Planner</a>
+        <a href="/quiz">Quiz</a>
+        <a href="/ai">AI Assistant</a>
+        <a href="/logout">Logout</a>
+    </nav>
+
+</header>
+
+
+<div class="dashboard">
+
+    <!-- WELCOME SECTION -->
+
+    <div class="dashboard-welcome">
+
+        <h1>Welcome, {{ name }} 👋</h1>
+
+        <p>
+            Track your study activities, quiz performance and learning progress.
+        </p>
+
+    </div>
+
+
+    <!-- STATISTICS -->
+
+    <div class="stats">
+
+        <div class="stat-card">
+
+            <div class="stat-icon">📚</div>
+
+            <h3>{{ total_tasks }}</h3>
+
+            <p>Total Tasks</p>
+
+        </div>
+
+
+        <div class="stat-card">
+
+            <div class="stat-icon">✅</div>
+
+            <h3>{{ completed_tasks }}</h3>
+
+            <p>Completed</p>
+
+        </div>
+
+
+        <div class="stat-card">
+
+            <div class="stat-icon">⏳</div>
+
+            <h3>{{ pending_tasks }}</h3>
+
+            <p>Pending</p>
+
+        </div>
+
+
+        <div class="stat-card">
+
+            <div class="stat-icon">📊</div>
+
+            <h3>{{ progress }}%</h3>
+
+            <p>Progress</p>
+
+        </div>
+
+    </div>
+
+
+    <!-- PROGRESS SECTION -->
+
+    <div class="progress-box">
+
+        <div class="section-title">
+
+            <h2>📈 Study Progress</h2>
+
+            <span>{{ progress }}%</span>
+
+        </div>
+
+
+        <div class="progress-bar">
+
+            <div class="progress-fill"
+                style="width: {{ progress }}%;">
+            </div>
+
+        </div>
+
+
+        {% if progress == 100 %}
+
+            <p>🎉 Excellent! You completed all your tasks.</p>
+
+        {% elif progress >= 50 %}
+
+            <p>🔥 Great progress! Keep going.</p>
+
+        {% elif progress > 0 %}
+
+            <p>💪 Keep studying and complete your remaining tasks.</p>
+
+        {% else %}
+
+            <p>🚀 Start adding tasks to track your study progress.</p>
+
+        {% endif %}
+
+    </div>
+
+
+    <!-- QUIZ SCORE -->
+
+    <div class="quiz-score-box">
+
+        <h2>🏆 Last Quiz Performance</h2>
+
+
+        {% if last_quiz %}
+
+            <div class="quiz-result">
+
+                <h3>
+                    {{ last_quiz["score"] }} / {{ last_quiz["total"] }}
+                </h3>
+
+                <p>
+                    Latest quiz score
+                </p>
+
+            </div>
+
+
+            <a href="/quiz">
+
+                <button>
+                    Take Quiz Again
+                </button>
+
+            </a>
+
+        {% else %}
+
+            <p>
+                You haven't attempted any quiz yet.
+            </p>
+
+
+            <a href="/quiz">
+
+                <button>
+                    Take Your First Quiz
+                </button>
+
+            </a>
+
+        {% endif %}
+
+    </div>
+
+
+    <!-- QUIZ STATISTICS -->
+
+    <div class="quiz-history-box">
+
+        <h2>📊 Quiz Statistics</h2>
+
+        <div class="quiz-stats">
+
+            <div>
+                <h3>{{ total_quizzes }}</h3>
+                <p>Total Quizzes</p>
+            </div>
+
+            <div>
+                <h3>{{ best_score }}</h3>
+                <p>Best Score</p>
+            </div>
+
+            <div>
+                <h3>{{ quiz_percentage }}%</h3>
+                <p>Last Quiz Percentage</p>
+            </div>
+
+        </div>
+
+
+        <h3>📝 Quiz History</h3>
+
+
+        {% if quiz_history %}
+
+            {% for quiz in quiz_history %}
+
+                <div class="history-item">
+
+                    <span>
+                        Quiz {{ loop.index }}
+                    </span>
+
+                    <strong>
+                        {{ quiz["score"] }} / {{ quiz["total"] }}
+                    </strong>
+
+                </div>
+
+            {% endfor %}
+
+        {% else %}
+
+            <p>No quiz history available.</p>
+
+        {% endif %}
+
+    </div>
+
+    <!-- STUDY PERFORMANCE -->
+
+    <div class="performance-box">
+
+        <h2>📊 Study Performance</h2>
+
+        <div class="performance-item">
+
+            <div class="performance-title">
+                <span>📚 Task Progress</span>
+                <strong>{{ progress }}%</strong>
+            </div>
+
+            <div class="performance-bar">
+                <div
+                    class="performance-fill"
+                    style="width: {{ progress }}%;">
+                </div>
+            </div>
+
+        </div>
+
+
+        <div class="performance-item">
+
+            <div class="performance-title">
+                <span>📝 Quiz Performance</span>
+                <strong>{{ quiz_percentage }}%</strong>
+            </div>
+
+            <div class="performance-bar">
+                <div
+                    class="performance-fill"
+                    style="width: {{ quiz_percentage }}%;">
+                </div>
+            </div>
+
+        </div>
+
+
+        <div class="performance-summary">
+
+            <div>
+                <h3>{{ total_tasks }}</h3>
+                <p>Total Tasks</p>
+            </div>
+
+            <div>
+                <h3>{{ total_quizzes }}</h3>
+                <p>Total Quizzes</p>
+            </div>
+
+            <div>
+                <h3>{{ best_score }}</h3>
+                <p>Best Quiz Score</p>
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- QUICK ACTIONS -->
+
+    <h2 class="quick-title">
+        🚀 Quick Actions
+    </h2>
+
+
+    <div class="dashboard-cards">
+
+
+        <!-- STUDY PLANNER -->
+
+        <div class="card">
+
+            <div class="icon">
+                📚
+            </div>
+
+            <h2>Study Planner</h2>
+
+            <p>
+                Create tasks, set deadlines and manage your study schedule.
+            </p>
+
+            <a href="/planner">
+
+                <button>
+                    Open Planner
+                </button>
+
+            </a>
+
+        </div>
+
+
+        <!-- QUIZ -->
+
+        <div class="card">
+
+            <div class="icon">
+                📝
+            </div>
+
+            <h2>Quiz</h2>
+
+            <p>
+                Test your programming knowledge and check your score.
+            </p>
+
+            <a href="/quiz">
+
+                <button>
+                    Start Quiz
+                </button>
+
+            </a>
+
+        </div>
+
+
+        <!-- AI ASSISTANT -->
+
+        <div class="card">
+
+            <div class="icon">
+                🤖
+            </div>
+
+            <h2>AI Assistant</h2>
+
+            <p>
+                Ask questions and get simple programming explanations.
+            </p>
+
+            <a href="/ai">
+
+                <button>
+                    Ask AI
+                </button>
+
+            </a>
+
+        </div>
+
+
+    </div>
+
+</div>
+
+
+<footer>
+
+    <p>
+        🎓 AI Study Assistant | MCA Mini Project
+    </p>
+
+</footer>
+
+
+</body>
+
+</html>
